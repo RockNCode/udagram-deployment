@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+    reverseproxy:
+        image: alexgarcia2k/reverseproxy
+        ports:
+            - 8080:8080
+        restart: always
+        depends_on:
+            - udagram-api-feed
+            - udagram-api-users
+
+    udagram-api-feed:
+        # ports:
+        #   - 8080:8080
+        # depends_on:
+        #     - reverseproxy
+        volumes:
+          - $HOME/.aws:/root/.aws
+        image: alexgarcia2k/udagram-api-feed
+        restart: always
+        environment:
+          - POSTGRES_USERNAME
+          - POSTGRES_PASSWORD
+          - POSTGRES_HOST
+          - POSTGRES_DB
+          - AWS_BUCKET
+          - AWS_REGION
+          - AWS_PROFILE
+          - JWT_SECRET
+          - URL
+
+    udagram-api-users:
+        volumes:
+          - $HOME/.aws:/root/.aws
+        # ports:
+        #   - 8081:8081
+
+        # depends_on:
+        #     - reverseproxy
+        image: alexgarcia2k/udagram-api-users
+        restart: always
+        environment:
+          - POSTGRES_USERNAME
+          - POSTGRES_PASSWORD
+          - POSTGRES_HOST
+          - POSTGRES_DB
+          - AWS_BUCKET
+          - AWS_REGION
+          - AWS_PROFILE
+          - JWT_SECRET
+          - URL
+    udagram-frontend:
+      image: alexgarcia2k/udagram-frontend
+      ports:
+        - 8100:80
+      depends_on:
+          - reverseproxy
