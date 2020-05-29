@@ -10,6 +10,7 @@ before_script:
   - echo "no tests"
 
 script:
+  - cd docker
   - docker --version # print the version for logging
   - docker build -t k8s-reverseproxy .
   - docker tag k8s-reverseproxy alexgarcia2k/k8s-reverseproxy
