@@ -17,4 +17,4 @@ script:
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push alexgarcia2k/reverseproxym
+  - docker push alexgarcia2k/k8s-reverseproxy
